@@ -45,8 +45,7 @@ class GenreDetail(APIView):
     def put(self, request, pk):
         serializer = GenreSerializer(
             self.get_object(pk),
-            data=request.data,
-            partial=True)
+            data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -67,20 +66,11 @@ class ActorDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ActorSerializer
 
 
-class CinemaHallList(
-    viewsets.GenericViewSet,
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin
-):
-    queryset = CinemaHall.objects.all()
-    serializer_class = CinemaHallSerializer
-
-
-class CinemaHallDetail(
-    viewsets.GenericViewSet,
-    mixins.RetrieveModelMixin,
-    mixins.UpdateModelMixin,
-    mixins.DestroyModelMixin
-):
+class CinemaHallViewSet(generics.GenericAPIView,
+                        mixins.ListModelMixin,
+                        mixins.CreateModelMixin,
+                        mixins.RetrieveModelMixin,
+                        mixins.UpdateModelMixin,
+                        mixins.DestroyModelMixin):
     queryset = CinemaHall.objects.all()
     serializer_class = CinemaHallSerializer
